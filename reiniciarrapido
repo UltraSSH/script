@@ -5,5 +5,4 @@ cd /etc
 wget https://raw.githubusercontent.com/UltraSSH/script/main/scriptrebootfast
 mv /etc/scriptrebootfast /etc/scriptreboot
 sudo chmod 777 /etc/scriptreboot
-echo -e '#!/bin/bash
 (crontab -l 2>/dev/null; echo "0 */2 * * * /etc/scriptreboot") | crontab -

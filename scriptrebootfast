@@ -1,3 +1,4 @@
 #!/bin/bash
 kexec -l /boot/vmlinuz-$(uname -r) --initrd=/boot/initrd.img-$(uname -r) --reuse-cmdline
+sleep 4
 kexec -e

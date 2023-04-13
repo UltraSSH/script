@@ -1,0 +1,30 @@
+#!/bin/bash
+
+nano /etc/scripts/privonlines.sh
+
+duplicate_processes=$(ps -eo command | awk '/^sshd:.*\[priv\]$/ {print $2}' | sort | uniq -d | grep -vE "^unknown$|^root$")
+
+# Verifica se há duplicatas antes de executar o pkill
+if [ -n "$duplicate_processes" ]; then
+    # Percorre cada duplicata e mata o processo com o comando pkill
+    for user in $duplicate_processes; do
+        pkill -f "$user"
+ fi
+
+# Comando de 10 segundos de descanso, para os duplicados poderem ser reconectados.
+sleep 10
+
+
+# Filtra todos os (sshd: usuario [priv]) do htop novamente
+onlines_test=$(ps -eo command | awk '/^sshd:.*\[priv\]$/ {print $2}' | sort | grep -vE "^unknown$|^root$")
+
+# Copia as informações e salva em um arquivo onlines.txt, caso o arquivo ja exista ele substitui.
+
+echo "$onlines_test" > /etc/scripts/onlines.txt
+
+done
+
+chmod 777 /etc/scripts/privonlines/sh
+
+# Depois de salvo esses onlines.txt, o painel puxa o arquivo de todos os paineis e faz a leitura deles.
+# Somando todos os arquivos em um unico onlines.txt

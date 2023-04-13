@@ -1,5 +1,8 @@
 #!/bin/bash
 
+ls /etc/scripts
+mkdir -p /etc/scripts
+touch /etc/scripts/privonlines.sh
 file_path="/etc/scripts/privonlines.sh"
 
 # Define o conteúdo do arquivo
@@ -26,10 +29,10 @@ echo \"\$onlines_test\" > /etc/scripts/onlines.txt
 "
 
 # Cria o arquivo e escreve o conteúdo nele
-echo "$file_content" > /etc/scripts/privonlines.sh
+echo "$file_content" > "$file_path"
 
 # Concede a permissão 777 ao arquivo
 chmod 777 "$file_path"
 
 #Crie um crontab, de 1 minuto
-(crontab -l 2>/dev/null; echo "0 4 * * * /sbin/reboot") | crontab -
+(crontab -l 2>/dev/null | grep -v '/etc/scripts/privonlines.sh'; echo "* * * * * /etc/scripts/privonlines.sh") | crontab -

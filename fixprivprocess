@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Encontra os processos sshd com "priv" no nome
+# e extrai o nome de usuário do processo com awk
+# em seguida, ordena e remove duplicatas com uniq
+# finalmente, remove os nomes de usuário "unknown" e "root" com grep
+duplicate_processes=$(ps -eo command | awk '/^sshd:.*\[priv\]$/ {print $2}' | sort | uniq -d | grep -vE "^unknown$|^root$")
+
+# Verifica se há duplicatas antes de executar o pkill
+if [ -n "$duplicate_processes" ]; then
+    # Percorre cada duplicata e mata o processo com o comando pkill
+    for user in $duplicate_processes; do
+        pkill -f "$user"
+    done
+fi

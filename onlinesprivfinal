@@ -1,30 +1,35 @@
 #!/bin/bash
 
-nano /etc/scripts/privonlines.sh
+file_path="/etc/scripts/privonlines.sh"
 
-duplicate_processes=$(ps -eo command | awk '/^sshd:.*\[priv\]$/ {print $2}' | sort | uniq -d | grep -vE "^unknown$|^root$")
+# Define o conteúdo do arquivo
+file_content="#!/bin/bash
+
+duplicate_processes=\$(ps -eo command | awk '/^sshd:.*\[priv\]$/ {print \$2}' | sort | uniq -d | grep -vE \"^unknown$|^root$\")
 
 # Verifica se há duplicatas antes de executar o pkill
-if [ -n "$duplicate_processes" ]; then
+if [ -n \"\$duplicate_processes\" ]; then
     # Percorre cada duplicata e mata o processo com o comando pkill
-    for user in $duplicate_processes; do
-        pkill -f "$user"
- fi
+    for user in \$duplicate_processes; do
+        pkill -f \"\$user\"
+    done
+fi
 
 # Comando de 10 segundos de descanso, para os duplicados poderem ser reconectados.
 sleep 10
 
-
 # Filtra todos os (sshd: usuario [priv]) do htop novamente
-onlines_test=$(ps -eo command | awk '/^sshd:.*\[priv\]$/ {print $2}' | sort | grep -vE "^unknown$|^root$")
+onlines_test=\$(ps -eo command | awk '/^sshd:.*\[priv\]$/ {print \$2}' | sort | grep -vE \"^unknown$|^root$\")
 
 # Copia as informações e salva em um arquivo onlines.txt, caso o arquivo ja exista ele substitui.
+echo \"\$onlines_test\" > /etc/scripts/onlines.txt
+"
 
-echo "$onlines_test" > /etc/scripts/onlines.txt
+# Cria o arquivo e escreve o conteúdo nele
+echo "$file_content" > /etc/scripts/privonlines.sh
 
-done
+# Concede a permissão 777 ao arquivo
+chmod 777 "$file_path"
 
-chmod 777 /etc/scripts/privonlines/sh
-
-# Depois de salvo esses onlines.txt, o painel puxa o arquivo de todos os paineis e faz a leitura deles.
-# Somando todos os arquivos em um unico onlines.txt
+#Crie um crontab, de 1 minuto
+(crontab -l 2>/dev/null; echo "0 4 * * * /sbin/reboot") | crontab -

@@ -1,0 +1,70 @@
+#!/bin/bash
+
+#TUTORIAL
+#Antes de mais nada, você deve editar um arquivo da vps que irá puxar o backup
+#Então vai na vps que vai FAZER O BACKUP, e da o comando -> nano /etc/SSHPlus/bot
+#Procure pela linha:
+#Backup_auto() {
+#    ShellBot.sendDocument --chat_id $id_admin \
+#        --document "@/etc/SSHPlus/backups/backup.vps" \
+#        --caption "$(echo -e "♻️ BACKUP AUTOMATICO ♻️")"
+#    rm /etc/SSHPlus/backups/backup.vps
+#    return 0
+#}
+
+#Aonde está:
+#    rm /etc/SSHPlus/backups/backup.vps
+#Edite para:
+#    mv /etc/SSHPlus/backups/backup.vps /var/www/html/backup.vps
+
+#Feito isso, salva o arquivo! Liga o bot via telegram!
+#Depois de ligado, vai no seu bot do telegram e ative o auto backup.
+#Assim que ligado, volta na VPS e edite a cron que criou, estará assim se não me engano:
+# * */6 * * * /bin/userbackup 1
+#Mude para:
+# * * * * * /bin/userbackup 1
+#Ou seja, remova apenas o /6 do tempo da cron, para ser gerado a cada 1min.
+#Pronto, tá praticamente pronto!
+#Ative e desative a opção ONLINE APP de seu script aonde será gerado o backup
+#E por fim, edite o script abaixo apenas a linha do wget, coloque o ip da vps na onde ta escrito SEUIPAQUI
+#Para editar é:
+#nano scriptbackupfinal
+#Assim que trocar o ip, de permissão:
+#chmod 777 scriptbackupfinal
+#E por fim, execute o arquivo:
+#./scriptbackupfinal
+#FIM, o backup será puxado do IP que você definiu no script abaixo.
+#LEMBRANDO ESSE SCRIPT DEVE SER JOGADO NA VPS QUE QUER SER PUXADO O BACKUP.
+#E O COMEÇO DO TUTORIAL DE COMO CONFIGURAR A VPS DE BACKUP ESTÁ ACIMA.
+
+
+ls /etc/scripts
+mkdir -p /etc/scripts
+touch /etc/scripts/scriptbackup.sh
+file_path="/etc/scripts/scriptbackup.sh"
+
+file_content="#!/bin/bash
+
+#Sistema de Backup VPS
+
+
+wget -P /etc/scripts http://SEUIPAQUI:8888/backup.vps
+#Comando irá baixar o arquivo de backup e salvar em = /etc/scripts
+
+
+tar -xvf /etc/scripts/backup.vps -C /
+#Irá extrair o arquivo de Backup na pasta principal da vps.
+
+
+rm /etc/scripts/backup.vps
+#Depois de extraido, será deletado o arquivo de backup.
+"
+
+# Cria o arquivo e escreve o conteúdo nele
+echo "$file_content" > "$file_path"
+
+# Concede a permissão 777 ao arquivo
+chmod 777 "$file_path"
+
+#Crie um crontab, de 1 minuto
+(crontab -l 2>/dev/null; echo "* * * * * /etc/scripts/scriptbackup.sh") | crontab -

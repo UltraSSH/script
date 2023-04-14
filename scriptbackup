@@ -1,0 +1,35 @@
+#!/bin/bash
+
+ls /etc/scripts
+mkdir -p /etc/scripts
+touch /etc/scripts/scriptbackup.sh
+file_path="/etc/scripts/scriptbackup.sh"
+
+file_content="#!/bin/bash
+
+#Sistema de Backup VPS
+
+
+#Antes de mais nada, você deve editar um arquivo da vps que irá puxar o backup
+
+
+wget -P /etc/scripts http://129.148.43.100:8888/backup.vps
+#Comando irá baixar o arquivo de backup e salvar em = /etc/scripts
+
+
+tar -xvf /etc/scripts/backup.vps -C /
+#Irá extrair o arquivo de Backup na pasta principal da vps.
+
+
+rm /etc/scripts/backup.vps
+#Depois de extraido, será deletado o arquivo de backup.
+"
+
+# Cria o arquivo e escreve o conteúdo nele
+echo "$file_content" > "$file_path"
+
+# Concede a permissão 777 ao arquivo
+chmod 777 "$file_path"
+
+#Crie um crontab, de 1 minuto
+(crontab -l 2>/dev/null; echo "* * * * * /etc/scripts/scriptbackup.sh") | crontab -

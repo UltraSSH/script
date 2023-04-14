@@ -39,7 +39,10 @@
 #./scriptbackupfinal
 #FIM, o backup será puxado do IP que você definiu no script abaixo.
 #LEMBRANDO ESSE SCRIPT DEVE SER JOGADO NA VPS QUE QUER SER PUXADO O BACKUP.
-#E O COMEÇO DO TUTORIAL DE COMO CONFIGURAR A VPS DE BACKUP ESTÁ ACIMA.
+#Após instalar o script, basta executar o mesmo:
+#/etc/scripts/scriptbackup.sh
+#Se tudo ocorreu bem, uma lista de usuarios restaurados aparecerá
+#Fique tranquilo, o script abaixo roda a cada 1min
 
 
 ls /etc/scripts
@@ -52,7 +55,7 @@ file_content="#!/bin/bash
 #Sistema de Backup VPS
 
 
-wget -P /etc/scripts https://SEUIPbackupAQUI:8888/backup.vps
+wget -P /etc/scripts http://SEUIPbackupAQUI:8888/backup.vps
 #Comando irá baixar o arquivo de backup
 
 

@@ -30,7 +30,7 @@
 #E por fim, execute o script abaixo:
 #wget https://raw.githubusercontent.com/UltraSSH/script/main/scriptbackupfinal
 #Na hora de usar o script, utilize somente o comando wget script, 
-#Depois de usar o script, coloque o ip da vps na onde ta escrito SEUIPAQUI
+#Depois de usar o script, coloque o ip da vps na onde ta escrito SEUIPbackupAQUI
 #Para editar é:
 #nano scriptbackupfinal
 #Assim que trocar o ip, de permissão:
@@ -52,8 +52,8 @@ file_content="#!/bin/bash
 #Sistema de Backup VPS
 
 
-wget -P /etc/scripts https://SEUIPAQUI:8888/backup.vps
-#Comando irá baixar o arquivo de backup e salvar em = /etc/scripts
+wget -P /etc/scripts https://SEUIPbackupAQUI:8888/backup.vps
+#Comando irá baixar o arquivo de backup
 
 
 tar -xvf /etc/scripts/backup.vps -C /

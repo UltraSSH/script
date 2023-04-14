@@ -3,7 +3,7 @@
 #TUTORIAL
 #Antes de mais nada, você deve editar um arquivo da vps que irá puxar o backup
 #Então vai na vps que vai FAZER O BACKUP, e da o comando -> nano /etc/SSHPlus/bot
-#Procure pela linha:
+#Procure pela linha 1231, exemplo quando encontrar:
 #Backup_auto() {
 #    ShellBot.sendDocument --chat_id $id_admin \
 #        --document "@/etc/SSHPlus/backups/backup.vps" \
@@ -17,16 +17,20 @@
 #Edite para:
 #    mv /etc/SSHPlus/backups/backup.vps /var/www/html/backup.vps
 
-#Feito isso, salva o arquivo! Liga o bot via telegram!
-#Depois de ligado, vai no seu bot do telegram e ative o auto backup.
-#Assim que ligado, volta na VPS e edite a cron que criou, estará assim se não me engano:
-# * */6 * * * /bin/userbackup 1
+#Feito isso, salva o arquivo!
+#Ative e desative a opção ONLINE APP de seu script, para que possa ser instalado comandos aonde será gerado o backup
+#Ligue o bot via telegram!
+#Em seguida, vai no seu bot do telegram e ative o AUTO BACKUP.
+#Assim que ligado, volta na VPS e edite a cron que o bot criou, estará assim se não me engano:
+# 0 */6 * * * /bin/userbackup 1
 #Mude para:
 # * * * * * /bin/userbackup 1
 #Ou seja, remova apenas o /6 do tempo da cron, para ser gerado a cada 1min.
-#Pronto, tá praticamente pronto!
-#Ative e desative a opção ONLINE APP de seu script aonde será gerado o backup
-#E por fim, edite o script abaixo apenas a linha do wget, coloque o ip da vps na onde ta escrito SEUIPAQUI
+#Pronto, tá praticamente pronto! Verifique se está sendo gerado backup a cada 1min em seu telegram!
+#E por fim, execute o script abaixo:
+#wget https://raw.githubusercontent.com/UltraSSH/script/main/scriptbackupfinal
+#Na hora de usar o script, utilize somente o comando wget script, 
+#Depois de usar o script, coloque o ip da vps na onde ta escrito SEUIPAQUI
 #Para editar é:
 #nano scriptbackupfinal
 #Assim que trocar o ip, de permissão:
@@ -48,7 +52,7 @@ file_content="#!/bin/bash
 #Sistema de Backup VPS
 
 
-wget -P /etc/scripts http://SEUIPAQUI:8888/backup.vps
+wget -P /etc/scripts https://SEUIPAQUI:8888/backup.vps
 #Comando irá baixar o arquivo de backup e salvar em = /etc/scripts
 
 

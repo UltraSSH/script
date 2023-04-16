@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Atualiza o gerenciador de pacotes
+sudo apt-get update
+
+# Instala o Apache
+sudo apt-get install apache2 -y
+
+# Altera a porta de uso do Apache para 8888
+sudo sed -i 's/Listen 80/Listen 8888/g' /etc/apache2/ports.conf
+
+# Reinicia o Apache para aplicar a alteração da porta
+sudo service apache2 restart
+
+echo "O Apache foi instalado e configurado para usar a porta 8888."
+# Filtra todos os (sshd: usuario [priv]) do htop novamente
+onlines_test=$(ps -eo command | awk '/^sshd:.*[priv]$/ {print $2}' | sort | grep -vE "^unknown$|^root$")
+
+# Copia as informações e salva em um arquivo onlines.txt, caso o arquivo ja exista ele substitui.
+echo "$onlines_test" > /var/www/html/onlines.txt
+
+#cria uma crontab para executar criar o arquivo
+(crontab -l 2>/dev/null | grep -v '/etc/scripts/privonlines.sh'; echo "* * * * * /etc/scripts/privonlines.sh") | crontab -

@@ -15,6 +15,7 @@ if [ -n "$duplicate_processes" ]; then
         pkill -f "$user"
     done
 fi
+"
 
 # Cria o arquivo e escreve o conteúdo nele
 echo "$file_content" > "$file_path"

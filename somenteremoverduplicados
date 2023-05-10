@@ -6,16 +6,17 @@ touch /etc/scripts/removerduplicados.sh
 file_path="/etc/scripts/removerduplicados.sh"
 
 # Define o conteúdo do arquivo
-file_content="#!/bin/bash
-duplicate_processes=$(ps -eo command | awk '/^sshd:.*\[priv\]$/ {print $2}' | sort | uniq -d | grep -vE "^unknown$|^root$")
-# Verifica se hÃ¡ duplicatas antes de executar o pkill
+file_content='
+#!/bin/bash
+duplicate_processes=$(ps -eo command | awk "/^sshd:.*\[priv\]$/ {print \$2}" | sort | uniq -d | grep -vE "^unknown$|^root$")
+# Verifica se ha duplicatas antes de executar o pkill
 if [ -n "$duplicate_processes" ]; then
     # Percorre cada duplicata e mata o processo com o comando pkill
     for user in $duplicate_processes; do
         pkill -f "$user"
     done
 fi
-"
+'
 
 # Cria o arquivo e escreve o conteúdo nele
 echo "$file_content" > "$file_path"

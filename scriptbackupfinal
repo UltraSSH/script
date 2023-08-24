@@ -1,33 +1,18 @@
 #!/bin/bash
 
 #TUTORIAL
-#Antes de mais nada, você deve editar um arquivo da vps que irá puxar o backup
-#Então vai na vps que vai FAZER O BACKUP, e da o comando -> nano /etc/SSHPlus/bot
-#Procure pela linha 1231, exemplo quando encontrar:
-#Backup_auto() {
-#    ShellBot.sendDocument --chat_id $id_admin \
-#        --document "@/etc/SSHPlus/backups/backup.vps" \
-#        --caption "$(echo -e "♻️ BACKUP AUTOMATICO ♻️")"
-#    rm /etc/SSHPlus/backups/backup.vps
-#    return 0
-#}
+# Primeiro, jogue esse script abaixo na VPS que ira GERAR BACKUP:
+#mkdir /etc/scripts && cd /etc/scripts && wget -P /etc/scripts https://raw.githubusercontent.com/UltraSSH/scriptbackup/main/scriptbackup && chmod 777 scriptbackup && /etc/scripts/scriptbackup
+# Feito isso, crie um crontab -e para executar o arquivo a cada 1 minuto (ou de acordo com o desejado:
+#* * * * * /etc/scripts/scriptbackup
 
-#Aonde está:
-#    rm /etc/SSHPlus/backups/backup.vps
-#Edite para:
-#    mv /etc/SSHPlus/backups/backup.vps /var/www/html/backup.vps
 
-#Feito isso, salva o arquivo!
-#Ative e desative a opção ONLINE APP de seu script, para que possa ser instalado comandos aonde será gerado o backup
-#Ligue o bot via telegram!
-#Em seguida, vai no seu bot do telegram e ative o AUTO BACKUP.
-#Assim que ligado, volta na VPS e edite a cron que o bot criou, estará assim se não me engano:
-# 0 */6 * * * /bin/userbackup 1
-#Mude para:
-# * * * * * /bin/userbackup 1
-#Ou seja, remova apenas o /6 do tempo da cron, para ser gerado a cada 1min.
-#Pronto, tá praticamente pronto! Verifique se está sendo gerado backup a cada 1min em seu telegram!
-#E por fim, execute o script abaixo:
+# Pronto, tá praticamente pronto! Verifique se está sendo gerado backup
+#cd /var/www/html/
+#ls
+# Estando tudo certo, prossiga para as maquinas que vão receber o BACKUP...
+#Execute o script abaixo nelas
+#LEMBRANDO ESSE SCRIPT DEVE SER JOGADO NA VPS QUE QUER SER PUXADO O BACKUP.
 #wget https://raw.githubusercontent.com/UltraSSH/script/main/scriptbackupfinal
 #Na hora de usar o script, utilize somente o comando wget script, 
 #Depois de usar o script, coloque o ip da vps na onde ta escrito SEUIPbackupAQUI

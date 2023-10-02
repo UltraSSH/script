@@ -40,7 +40,7 @@ file_content="#!/bin/bash
 #Sistema de Backup VPS
 
 
-wget -P /etc/scripts http://backup.ultrassh.xyz:8888/backup.vps
+wget -P /etc/scripts http://backup.ultrassh.xyz:81/backup.vps
 #Comando irá baixar o arquivo de backup
 
 
